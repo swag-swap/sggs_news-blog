@@ -1,7 +1,8 @@
-import React from "react";
+import React , {useRef} from "react";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import reCAPTCHA from "react-google-recaptcha";
 
 const Register = () => {
   const [inputs, setInputs] = useState({
@@ -10,13 +11,13 @@ const Register = () => {
     password: "",
   });
   const [err, setError] = useState(null);
-
+  
   const navigate = useNavigate();
-
+  
   const handleChange = (e) => {
     setInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
- 
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     try { 
@@ -26,7 +27,8 @@ const Register = () => {
       setError(err.response.data);
     }
   };
-
+  const captchaRef = useRef(null);
+  
   return (
     <div className="auth">
       <h1>Register</h1>
@@ -52,6 +54,8 @@ const Register = () => {
           name="password"
           onChange={handleChange}
         />
+        <reCAPTCHA sitekey="hi"
+ref={captchaRef}/>
         <button onClick={handleSubmit}>Register</button>
         {err && <p>{err}</p>}
         <span>
